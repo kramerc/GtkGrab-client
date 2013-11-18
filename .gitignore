@@ -1,3 +1,5 @@
 config.cfg
 .s3cfg
 *.pyc
+MANIFEST
+dist/
