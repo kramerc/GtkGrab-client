@@ -9,5 +9,6 @@ setup(name='GtkGrab-client',
       maintainer_email='pieter@kokx.nl',
       py_modules=['pyperclip'],
       scripts=['GtkGrab','record-gif.sh'],
-      data_files=[('share/GtkGrab', ['config.cfg-sample-linux','config.cfg-sample-mac'])],
+      data_files=[('share/GtkGrab-client', ['config.cfg-sample-linux','config.cfg-sample-mac']),
+                  ('share/licenses/GtkGrab-client', ['COPYING'])],
       url='https://github.com/kokx/GtkGrab-client')
