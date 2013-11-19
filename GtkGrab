@@ -21,9 +21,12 @@
 
 import ConfigParser, sys, urllib2, os, base64, hashlib, pyperclip, time
 
+from os.path import expanduser;
+home = expanduser("~");
+
 config = ConfigParser.ConfigParser()
 try:
-    config.readfp(open('~/.GtkGrab/config.cfg'))
+    config.readfp(open(home + '/.GtkGrab/config.cfg'))
 except IOError:
     print("Please configure GtkGrab, in ~/.GtkGrab/config.cfg")
     print("You can find a sample configuration file in")
