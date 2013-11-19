@@ -1,15 +1,21 @@
-# GtkGrab - Screenshot Uploader
+GtkGrab - Screenshot Uploader
+=============================
 
-Version 0.3.0 Created by Evan Coury
+GtkGrab takes screenshots and automatically uploads them. GtkGrab is split up
+into two components, the client and the server. You can find the server
+component on
+[http://github.com/kokx/GtkGrab-server](http://github.com/kokx/GtkGrab-server).
 
-## Update Notice
+Version 0.3.2, Created by Evan Coury and Pieter Kokx.
 
-If you are updating GtkGrab, please be aware that you may need to update your
-config.cfg file (see the samples) and/or your handler.php on the server after
-updating.
+Update notice
+=============
 
-## Introduction
+If you are updating GtkGrab, you probably need to update your `config.cfg`
+(see the samples).
 
+Introduction
+============
 GtkGrab is an open source tool for Linux and Mac that takes a screenshot of a
 window or specified area of the screen, uploads it to a web server of your
 choice, and copies the URL to your clipboard automatically. Once you start
@@ -18,87 +24,91 @@ free and open source version of the commercial TinyGrab.com software/service,
 except that it also works on Linux and you don't have to pay to use your own
 server. The name GtkGrab implies that it may only work in GTK-based desktop
 environment such as Gnome, however this is no longer the case (though it was
-originally). To be clear, GtkGrab has been tested to work on Linux running both
-Gnome and KDE as well as on Mac OSX.
+originally). To be clear, GtkGrab has been tested to work on Linux running
+both Gnome and KDE as well as on Mac OSX.
 
-## Usage Instructions
-
+Usage Instructions
+==================
 * Press your specified keyboard shortcut.
 * On Linux: Either click and drag to specify an area of the screen to capture,
   or click on the title of a window to capture just that window.
-* On Mac: Use the space bar to toggle between mouse and window selection modes.
+* On Mac: Use the space bar to toggle between mouse and window selection
+  modes.
 * Within a few seconds, you should get an unobtrusive notification that your
   screenshot has been uploaded and that the URL has been copied to your
   clipboard.
 
-## Installation
+Installation instructions
+=========================
 
-* Clone your own copy via Git.
-* Set a username and password in handler.php and upload it to your server.
-* Create a directory called **`caps`** on your server in the same directory as
-  handler.php and chmod it to 777.
-* Copy the appropriate config.cfg-sample-{os} to config.cfg. Set the username
-  and password to match handler.php and posturl to be the URL to handler.php.
-* Follow any platform-specific instructions below.
+Arch Linux
+----------
 
-### Amazon S3 Upload Support
-* Alternatively, GtkGrab supports using `s3cmd` (available in ruby-gems) to
-  upload screenshots to Amazon S3.
-* To configure: `s3cmd --configure` to create a `.s3cfg` file and place it in
-  the GtkGrab directory. In your GtkGrab config, set `postURL` to `s3`.
-* **Note:** if a local `.s3cfg` is not available, then the default `.s3cfg` will
-  be used instead (if it exists).
+For Arch Linux, there is a PKGBUILD available on the
+[AUR](http://aur.archlinux.org/packages/gtkgrab-client).
 
-### Fedora Installation
+Note that you still have to [configure](#configuration) GtkGrab.
 
-In your terminal, run the following command as root or via sudo:
+Manual installation
+-------------------
 
-`yum install scrot xclip`
+First, make sure you have all dependencies installed:
 
-In Gnome, set up a keyboard shortcut for **`GtkGrab/screenshot`** of your
-choosing via System -> Preferences -> Keyboard Shortcuts.
+* python2.7
+* xclip
+* Screenshot program (scrot by default)
 
-### Ubuntu Installation
+Download the latest release from the [releases
+page](http://github.com/kokx/GtkGrab-client/releases/), or use git to obtain
+the latest (development) version.
 
-In your terminal, run the following command:
+Finally, go to the directory where you have downloaded and unpacked the source to, and
+run:
 
-`sudo apt-get install scrot xclip`
+```bash
+python setup.py install --optimize=1
+```
 
-In Gnome, set up a keyboard shortcut for **`GtkGrab/screenshot`** of your
-choosing via System -> Preferences -> Keyboard Shortcuts.
-
-### Arch Linux Installation
-
-In your terminal, run the following command as root or via sudo:
-
-`pacman -S scrot xclip`
-
-In Gnome, set up a keyboard shortcut for **`GtkGrab/screenshot`** of your
-choosing via System -> Preferences -> Keyboard Shortcuts.
-
-### Mac Installation
+Specific Mac OS X instructions
+------------------------------
 
 * Install Growl and growlnotify from http://growl.info/
-* Use automator to run **`GtkGrab/screenshot`** via the keyboard shortcut
-  of your choice. Instructions for this can be found
+* Use automator to run `GtkGrab` via the keyboard shortcut of your choice.
+  Instructions for this can be found
   [here](http://www.macosxautomation.com/services/learn/tut01/index.html),
   except where it says to select "Launch Application", you should select "Run
   Shell Script" instead.
 
-### Windows Installation
+Configuration
+=============
 
-Sorry, GtkGrab does not support your operating system. If anyone would like to
-add Windows support, please fork the project and let me know!
+Now you should configure GtkGrab using one of the sample configuration files
+in `/usr/share/GtkGrab-client/`.
 
-## Screenshot Tool
+When you have configured GtkGrab, you can execute the `GtkGrab` command to
+test it.
 
-By default, GtkGrab uses scrot for making screenshots. And it will, by default,
-only make screenshots of a selected area. But there is a 'command'
+Keyboard shortcut
+-----------------
+In GNOME, you can configure the GtkGrab command as a shortcut via `System >
+Preferences > Keyboard Shortcuts`.
+
+
+Screenshot tool
+===============
+By default, GtkGrab uses scrot for making screenshots. And it will, by
+default, only make screenshots of a selected area. But there is a 'command'
 configuration directive. You can change this to any screenshot command that
 saves a screenshot to the given path `%s`.
 
-## Animated GIF Support
+Amazon S3 Upload Support
+========================
+GtkGrab supports using `s3cmd` (available in ruby-gems) to upload screenshots
+to Amazon S3. This feature still has to be documented properly for usage with
+the installed GtkGrab.
 
+Animated GIF Support
+====================
 GtkGrab optionally supports recording an animated GIF of your screen. This
 requires a few extra dependencies to work properly:
 
@@ -116,18 +126,19 @@ Also due to laziness, the gif support only works on Linux, not Mac. Mac/Windows
 support could be possible via [LICEcap](http://www.cockos.com/licecap/)
 possibly.
 
-To use GtkGrab in gif mode, simply invoke it with `./screenshot gif`.
+To use GtkGrab in gif mode, simply invoke it with `GtkGrab gif`.
 
-## Troubleshooting
+Troubleshooting
+===============
 
 * P: After taking a screenshot no notification is displayed, when running it
   from the command line the error 'sh: notify-send: not found'
 * A: Install notify-osd libnotify-bin via your package manager
 * P: ImportError: No module named ConfigParser
 * A: GtkGrab wants python2 but your default is python3, you need to change the
-  first line in `./screenshot` to point to your python2, /usr/bin/python2 for
+  first line in `GtkGrab` to point to your python2, /usr/bin/python2 for
   example
-* P: Binding a keyboard shortcut in Gnome doesn't work.
+* P: Binding a keyboard shortcut in GNOME doesn't work.
 * A: This is an issue with scrot. To solve this, try setting the command option
   in the config file to `sleep 0.5 && scrot --b -s %s`. For more information
   see [this](http://ubuntuforums.org/showthread.php?t=1881234) and
@@ -135,8 +146,9 @@ To use GtkGrab in gif mode, simply invoke it with `./screenshot gif`.
   [this](https://bbs.archlinux.org/viewtopic.php?id=159900) and
   [this](https://groups.google.com/forum/#!topic/linux.debian.bugs.dist/_tmJIFYBfZo).
 
-## License
+License
+=======
 
 GtkGrab is released under the terms of the [GNU General Public License (GPL)
 Version 3](http://en.wikipedia.org/wiki/GNU_General_Public_License). See
-**`COPYING`** file for details.
+`COPYING` file for details.
