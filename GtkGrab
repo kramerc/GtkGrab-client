@@ -19,7 +19,7 @@
 # @copyright  Copyright 2010-2013 Pieter Kokx (http://kokx.nl/)
 # @package    Client
 
-import ConfigParser, sys, urllib2, os, base64, hashlib, pyperclip, time
+import ConfigParser, sys, urllib2, os, base64, hashlib, pyperclip, time, platform
 
 from os.path import expanduser;
 home = expanduser("~");
@@ -90,5 +90,11 @@ else:
 os.remove(path)
 
 pyperclip.copy(url)
+if platform.system() == 'Linux':
+    # Put the URL into the primary X selection
+    if os.system('which xclip') == 0:
+        out = os.popen('xclip -selection p', 'w')
+        out.write(url)
+        out.close()
 
 os.system(notifyCommand.replace('%s', url))
