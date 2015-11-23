@@ -43,7 +43,10 @@ notifyCommand = config.get('GtkGrab','notifyCommand')
 
 path = config.get('GtkGrab','capPath')
 
-os.system(command.replace("%s", path))
+if os.system(command.replace("%s", path)) != 0:
+    if config.has_option('GtkGrab','notifyFailCommand'):
+        os.system(config.get('GtkGrab','notifyFailCommand'))
+    exit()
 
 if postURL == 's3':
     bucket = config.get('GtkGrab', 's3bucket')
