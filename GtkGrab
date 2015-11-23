@@ -43,6 +43,9 @@ notifyCommand = config.get('GtkGrab','notifyCommand')
 
 path = config.get('GtkGrab','capPath')
 
+if config.has_option('GtkGrab','delay'):
+    time.sleep(float(config.get('GtkGrab','delay')))
+
 if os.system(command.replace("%s", path)) != 0:
     if config.has_option('GtkGrab','notifyFailCommand'):
         os.system(config.get('GtkGrab','notifyFailCommand'))
