@@ -33,8 +33,6 @@ except IOError:
     print "/usr/share/GtkGrab/"
     sys.exit(1)
 
-user = config.get('GtkGrab','username')
-token = config.get('GtkGrab','password')
 postURL = config.get('GtkGrab','posturl')
 command = config.get('GtkGrab','command')
 
@@ -50,17 +48,28 @@ os.system(command.replace("%s", path))
 if postURL == 's3':
     bucket = config.get('GtkGrab', 's3bucket')
     prefix = config.get('GtkGrab', 's3prefix')
-    filename = hashlib.sha1()
-    filename.update(str(time.time()))
-    filename = filename.hexdigest()
-    s3Url = "s3://" + bucket + "/" + prefix + "/" + filename + ".png"
-    uploadCommand = "s3cmd ";
+
+    now = time.localtime()
+    year = str(now.tm_year)
+    hour = time.strftime('%m', now)
+
+    filename = time.strftime('%Y-%m-%d_%H-%M-%S', now) + '.png'
+    s3Path = bucket
+    if prefix:
+        s3Path += '/' + prefix
+    s3Path += '/' + str(now.tm_year) + '/' + str(now.tm_mon) + '/' + filename
+
+    s3Url = 's3://' + s3Path
+    uploadCommand = 's3cmd ';
     if (os.path.exists('.s3cfg')):
-        uploadCommand += "-c .s3cfg "
-    uploadCommand += "put " + path + " " + s3Url + " --acl-public"
+        uploadCommand += '-c .s3cfg '
+    uploadCommand += 'put ' + path + ' ' + s3Url + ' --acl-public --rr'
     os.system(uploadCommand)
-    url = "http://"+bucket+".s3.amazonaws.com/caps/"+filename+".png"
+    url = 'http://' + s3Path
 else:
+    user = config.get('GtkGrab','username')
+    token = config.get('GtkGrab','password')
+
     # encode the screenshot with base64
     data = base64.b64encode(open(path, 'r').read())
     # hash the data with the user's secret token and send that as header
