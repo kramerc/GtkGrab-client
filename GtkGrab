@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # This file is part of GtkGrab.
 #
 # GtkGrab is free software: you can redistribute it and/or modify
@@ -28,9 +28,9 @@ config = ConfigParser.ConfigParser()
 try:
     config.readfp(open(home + '/.GtkGrab/config.cfg'))
 except IOError:
-    print("Please configure GtkGrab, in ~/.GtkGrab/config.cfg")
-    print("You can find a sample configuration file in")
-    print("/usr/share/GtkGrab/")
+    print "Please configure GtkGrab, in ~/.GtkGrab/config.cfg"
+    print "You can find a sample configuration file in"
+    print "/usr/share/GtkGrab/"
     sys.exit(1)
 
 user = config.get('GtkGrab','username')
