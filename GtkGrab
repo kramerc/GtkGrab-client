@@ -56,14 +56,14 @@ if postURL == 's3':
     prefix = config.get('GtkGrab', 's3prefix')
 
     now = time.localtime()
-    year = str(now.tm_year)
-    hour = time.strftime('%m', now)
+    year = time.strftime('%Y', now)
+    month = time.strftime('%m', now)
 
     filename = time.strftime('%Y-%m-%d_%H-%M-%S', now) + '.png'
     s3Path = bucket
     if prefix:
         s3Path += '/' + prefix
-    s3Path += '/' + str(now.tm_year) + '/' + str(now.tm_mon) + '/' + filename
+    s3Path += '/' + year + '/' + month + '/' + filename
 
     s3Url = 's3://' + s3Path
     uploadCommand = 's3cmd ';
