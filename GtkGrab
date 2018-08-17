@@ -54,6 +54,7 @@ if os.system(command.replace("%s", path)) != 0:
 if postURL == 's3':
     bucket = config.get('GtkGrab', 's3bucket')
     prefix = config.get('GtkGrab', 's3prefix')
+    ssl = config.get('GtkGrab', 'ssl')
 
     now = time.localtime()
     year = time.strftime('%Y', now)
@@ -71,7 +72,12 @@ if postURL == 's3':
         uploadCommand += '-c .s3cfg '
     uploadCommand += 'put ' + path + ' ' + s3Url + ' --acl-public --rr'
     os.system(uploadCommand)
-    url = 'http://' + s3Path
+
+    if ssl:
+        scheme = 'https://'
+    else:
+        scheme = 'http://'
+    url = scheme + s3Path
 else:
     user = config.get('GtkGrab','username')
     token = config.get('GtkGrab','password')
